@@ -1,0 +1,42 @@
+Bootstrap: docker
+From: debian:buster
+
+
+%post
+    apt-get -y update; apt-get -y install curl procps
+    mkdir -p /data/input /data/output;
+    mkdir /code; cd /code; curl -LO https://dl.missionbio.io/onprem-miniconda/TapestriPipeline-v1.15-Linux-x86_64.sh; 
+    chmod +x TapestriPipeline-v1.15-Linux-x86_64.sh; 
+    ./TapestriPipeline-v1.15-Linux-x86_64.sh -b -p /code/dnapipe
+    cd /code; curl -LO https://raw.githubusercontent.com/tshuangbl/singularity_scripts/master/run.sh
+
+%environment
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+    export TAPESTRI_HOME="/code/dnapipe"
+    export INDIR="/data/input"
+    export OUTDIR="/data/output"
+    export MB_SAMPNAME="samp"
+    export N_CORES=12
+
+%runscript
+    bash /code/run.sh
+
+%help
+    This is containerized Mission Bio tapestri DNA pipeline v1.15. The required parameters (and default value, if any) are:
+    INDIR       [ /data/input in container; should be specified by binding like --bind /host/path/to/input:/data/input ]
+    OUTDIR      [ /data/output in container; should be specified by binding like --bind /host/path/to/output:/data/putput ]
+    MB_SAMPNAME (samp)
+    N_CORES     12
+    MISC_ARGS   [(empty, can place --part1-only by --env MISC_ARGS=--part1-only) ]
+
+    These parameters can be overridden by the --env argument of singularity.
+
+    The underlying tapestri command is
+
+    tapestri dna run --output-folder ${OUTDIR} --output-prefix ${MB_SAMPNAME} \
+      --r1 ${INDIR}/Read1.fq.gz --r2 ${INDIR}/Read2.fq.gz  \
+      --config ${INDIR}/conf.yaml --qc --n-cores ${N_CORES} ${MISC_ARGS}
+
+
+
