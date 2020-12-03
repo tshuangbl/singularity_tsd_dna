@@ -28,7 +28,7 @@ From: debian:buster
     OUTDIR      [ /data/output in container; should be specified by binding like --bind /host/path/to/output:/data/putput ]
     MB_SAMPNAME (samp)
     N_CORES     12
-    MISC_ARGS   [(empty, can place --part1-only by --env MISC_ARGS=--part1-only) ]
+    OTHER_ARGS   [(empty, can place --part1-only by --env OTHER_ARGS=--part1-only) ]
 
     These parameters can be overridden by the --env argument of singularity.
 
@@ -36,7 +36,7 @@ From: debian:buster
 
     tapestri dna run --output-folder ${OUTDIR} --output-prefix ${MB_SAMPNAME} \
       --r1 ${INDIR}/Read1.fq.gz --r2 ${INDIR}/Read2.fq.gz  \
-      --config ${INDIR}/conf.yaml --qc --n-cores ${N_CORES} ${MISC_ARGS}
+      --config ${INDIR}/conf.yaml --qc --n-cores ${N_CORES} ${OTHER_ARGS}
 
 
 
