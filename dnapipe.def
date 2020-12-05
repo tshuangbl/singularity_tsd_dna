@@ -4,7 +4,7 @@ From: debian:buster
 
 %post
     apt-get -y update; apt-get -y install curl procps git
-    mkdir -p /data/input /data/output;
+    mkdir -p /data/in /data/out;
     mkdir /code; cd /code; curl -LO https://dl.missionbio.io/onprem-miniconda/TapestriPipeline-v1.15-Linux-x86_64.sh; 
     git clone --depth 1 --branch 1.15 https://github.com/tshuangbl/singularity_tsd_dna.git 
     chmod +x TapestriPipeline-v1.15-Linux-x86_64.sh; 
@@ -14,8 +14,8 @@ From: debian:buster
     export LC_ALL=C.UTF-8
     export LANG=C.UTF-8
     export TAPESTRI_HOME="/code/dnapipe"
-    export INDIR="/data/input"
-    export OUTDIR="/data/output"
+    export INDIR="/data/in"
+    export OUTDIR="/data/out"
     export MB_SAMPNAME="samp"
     export N_CORES=12
 
@@ -24,8 +24,8 @@ From: debian:buster
 
 %help
     This is containerized Mission Bio tapestri DNA pipeline v1.15. The required parameters (and default value, if any) are:
-    INDIR       [ /data/input in container; should be specified by binding like --bind /host/path/to/input:/data/input ]
-    OUTDIR      [ /data/output in container; should be specified by binding like --bind /host/path/to/output:/data/putput ]
+    INDIR       [ /data/in in container; should be specified by binding like --bind /host/path/to/input:/data/in ]
+    OUTDIR      [ /data/out in container; should be specified by binding like --bind /host/path/to/output:/data/out ]
     MB_SAMPNAME (samp)
     N_CORES     12
     OTHER_ARGS   [(empty, can place --part1-only by --env OTHER_ARGS=--part1-only) ]
